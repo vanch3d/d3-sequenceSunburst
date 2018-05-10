@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dependency Wheel</title>
+</head>
+<body>
+
+<div id="chart" style="width: 100%;">
+</div>
+<div id="legend"></div>
+
+
+</body>
+<script src="../node_modules/d3v4/build/d3.min.js"></script>
+<script src="../dist/d3-sequenceSunburst.js"></script>
+<script>
+    (function () {
+        let chart = d3.sequenceSunburst()
+            .width(960);
+
+        console.log(chart.width());
+
+        // generate the chart from the dataset in the selected element
+        d3.select('#chart')
+            .datum([])
+            .call(chart);
+
+    })();
+</script>
+</html>
