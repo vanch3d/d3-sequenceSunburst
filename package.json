@@ -45,6 +45,5 @@
     "uglify-js-es6": "^2.8.9",
     "d3v4": "^4.2.2"
   },
-  "dependencies": {
-  }
+  "dependencies": {}
 }

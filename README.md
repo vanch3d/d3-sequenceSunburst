@@ -14,7 +14,7 @@ The module has been created on the basis of Mike Bostock's [guidelines](https://
 
 ## Installing
 
-If you use NPM, `npm install d3-calendar`. Otherwise, download the [latest release](https://github.com/vanch3d/d3-sequenceSunburst/releases/latest). 
+If you use NPM, `npm install d3-sequenceSunburst`. Otherwise, download the [latest release](https://github.com/vanch3d/d3-sequenceSunburst/releases/latest). 
 
 ## Usage
 
@@ -32,5 +32,3 @@ for mode detailed instructions.
 <a href="#d3_sequenceSunburst" name="d3_sequenceSunburst">#</a> d3.<b>sequenceSunburst</b>()
 
 Constructs a new graph
-
-## Changelog 
