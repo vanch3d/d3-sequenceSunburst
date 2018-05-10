@@ -3,28 +3,123 @@
 <head>
     <meta charset="UTF-8">
     <title>Dependency Wheel</title>
+    <style>
+        body {
+            font-family: 'Open Sans', sans-serif;
+            font-size: 12px;
+            font-weight: 400;
+            background-color: #fff;
+            width: 960px;
+            height: 700px;
+            margin-top: 10px;
+        }
+
+        #main {
+            float: left;
+            width: 750px;
+        }
+
+        #sidebar {
+            float: right;
+            width: 100px;
+        }
+
+        #sequence {
+            width: 600px;
+            height: 70px;
+        }
+
+        #legend {
+            padding: 10px 0 0 3px;
+        }
+
+        #sequence text, #legend text {
+            font-weight: 600;
+            fill: #fff;
+        }
+
+        #chart {
+            position: relative;
+        }
+
+        #chart path {
+            stroke: #fff;
+        }
+
+        #explanation {
+            position: absolute;
+            top: 260px;
+            left: 305px;
+            width: 140px;
+            text-align: center;
+            color: #666;
+            z-index: -1;
+        }
+
+        #percentage {
+            font-size: 2.5em;
+        }
+
+        .node.home{
+            fill: red;
+        }
+    </style>
 </head>
 <body>
 
-<div id="chart" style="width: 100%;">
+<div id="main">
+    <div id="sequence"></div>
+    <div id="chart">
+        <div id="explanation" style="visibility: hidden;">
+            <span id="percentage"></span><br/>
+            of visits begin with this sequence of pages
+        </div>
+    </div>
 </div>
-<div id="legend"></div>
-
+<div id="sidebar">
+    <input type="checkbox" id="togglelegend"> Legend<br/>
+    <div id="legend" style="visibility: hidden;"></div>
+</div>
 
 </body>
 <script src="../node_modules/d3v4/build/d3.min.js"></script>
 <script src="../dist/d3-sequenceSunburst.js"></script>
 <script>
     (function () {
+
+        // create the chart with custom width & color mapping
         let chart = d3.sequenceSunburst()
-            .width(960);
+            .width(600)
+            .nodeColors({
+                //"home": "#5687d1",
+                "product": "#7b615c",
+                "search": "#de783b",
+                "account": "#6ab975",
+                "other": "#a173d1",
+                "end": "#bbbbbb"
+            })
+            .nodeClass(function(d) {
+                return "node " + d.data.name;
+            });
 
-        console.log(chart.width());
+        // Use d3.text and d3.csvParseRows so that we do not need to have a header
+        // row, and can receive the csv as an array of arrays.
+        d3.text("visit-sequences.csv", function(text) {
 
-        // generate the chart from the dataset in the selected element
-        d3.select('#chart')
-            .datum([])
-            .call(chart);
+            // each line reformatted as key/value pair
+            let csv = d3.csvParseRows(text,function(d){
+                return {
+                    key: d[0],
+                    value: d[1]
+                }
+            });
+
+            // generate the chart from the dataset in the selected element
+            d3.select('#chart')
+                .datum(csv)
+                .call(chart);
+        });
+
 
     })();
 </script>
