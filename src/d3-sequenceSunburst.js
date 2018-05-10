@@ -15,14 +15,10 @@ export default function() {
     };
 
     // Mapping of step names to colors.
-    let colors = {
-        "home": "#5687d1",
-        "product": "#7b615c",
-        "search": "#de783b",
-        "account": "#6ab975",
-        "other": "#a173d1",
-        "end": "#bbbbbb"
-    };
+    let colors = {"end": "#bbbbbb"};
+
+    // Set the class for the nodes
+    let nodeClass = function() { return null; };
 
     // Total size of all segments; we set this later, after loading the data.
     let totalSize = 0;
@@ -85,6 +81,7 @@ export default function() {
                 .attr("d", arc)
                 .attr("fill-rule", "evenodd")
                 .style("fill", function(d) { return colors[d.data.name]; })
+                .attr("class",nodeClass)
                 .style("opacity", 1)
                 .on("mouseover", mouseover);
 
@@ -190,7 +187,9 @@ export default function() {
 
             entering.append("svg:polygon")
                 .attr("points", breadcrumbPoints)
-                .style("fill", function(d) { return colors[d.data.name]; });
+                .style("fill", function(d) { return colors[d.data.name]; })
+                .attr("class",nodeClass);
+
 
             entering.append("svg:text")
                 .attr("x", (b.w + b.t) / 2)
@@ -275,7 +274,7 @@ export default function() {
             for (let i = 0; i < csv.length; i++) {
                 let sequence = csv[i].key;
                 let size = +csv[i].value;
-                if (isNaN(size) || sequence==="-end") { // e.g. if this is a header row
+                if (isNaN(size)) { // e.g. if this is a header row
                     continue;
                 }
                 let parts = sequence.split("-");
@@ -330,6 +329,25 @@ export default function() {
         height = value;
         return chart;
     };
+
+    chart.breadcrumb = function(obj) {
+        if (!arguments.length) return b;
+        b = obj;
+        return chart;
+    };
+
+    // @todo[vanch3d] merge with default values; ensure "end" exists in all cases
+    chart.nodeColors = function(obj) {
+        if (!arguments.length) return colors;
+        colors = obj;
+        return chart;
+    };
+
+    chart.nodeClass = function(fct) {
+        nodeClass = fct;
+        return chart;
+    };
+
 
     return chart;
 }
